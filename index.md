@@ -4,7 +4,7 @@
 
 ## Besoin d'aide ?
 
-Pour toute question, suggestion ou problème : [VOTRE COURRIEL DE SUPPORT]
+Pour toute question, suggestion ou problème : support@wominute.com
 
 J'essaie de répondre en quelques jours.
 
