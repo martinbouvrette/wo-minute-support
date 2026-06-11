@@ -22,7 +22,7 @@ Wo-Minute ne collecte, ne stocke et ne transmet **aucune donnée personnelle**. 
 
 ## Questions
 
-Pour toute question au sujet de cette politique : [VOTRE COURRIEL DE SUPPORT]
+Pour toute question au sujet de cette politique : support@wominute.com
 
 ---
 
