@@ -26,7 +26,7 @@ RDV garde vos renseignements **sur votre appareil**. Seul le **texte que vous di
 
 ## Questions
 
-Pour toute question au sujet de cette politique : **[VOTRE COURRIEL DE SUPPORT]**
+Pour toute question au sujet de cette politique : **support@wominute.com**
 
 ---
 
@@ -58,7 +58,7 @@ RDV keeps your information **on your device**. Only the **text you dictate** is 
 
 ## Questions
 
-For any question about this policy: **[YOUR SUPPORT EMAIL]**
+For any question about this policy: **support@wominute.com**
 
 ---
 
