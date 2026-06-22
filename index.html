@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wo-Minute — On fait disparaître le temps</title>
+<meta name="description" content="Wo-Minute est un minuteur qui se regarde. Une scène vivante donne aux yeux quelque chose à suivre, et au temps une forme qu'on peut accompagner. Conçu au Québec par un intervenant en réadaptation.">
+<meta name="theme-color" content="#0e0c20">
+<meta property="og:title" content="Wo-Minute — On fait disparaître le temps">
+<meta property="og:description" content="Le minuteur qui se regarde. Un point d'ancrage visuel pour les transitions, le retour au calme et les attentes difficiles.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0c20; --card:#1a1640; --card-2:#221c52;
+  --cream:#f3e7cf; --cream-dim:rgba(243,231,207,.72); --cream-faint:rgba(243,231,207,.55);
+  --white:#fff; --gold:#f1dca6; --sun:#ef8a5a; --sun-soft:#f6a878;
+  --line:rgba(243,231,207,.14); --maxw:1120px; --r:22px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--cream);
+  font-family:"Nunito",system-ui,sans-serif; font-size:18px; line-height:1.7;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden}
+body::before{content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(900px 600px at 78% -8%, rgba(239,138,90,.16), transparent 60%),
+    radial-gradient(1100px 800px at 12% 4%, rgba(120,96,210,.20), transparent 60%),
+    linear-gradient(180deg,#0e0c20 0%,#0b0a1c 100%)}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif; font-weight:500; line-height:1.12; color:var(--white); margin:0 0 .5em}
+h1{font-size:clamp(2.4rem,6vw,4.2rem); letter-spacing:-.5px}
+h2{font-size:clamp(1.7rem,3.8vw,2.7rem); letter-spacing:-.3px}
+h3{font-size:1.25rem}
+p{margin:0 0 1em}
+a{color:var(--gold); text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+section{padding:clamp(64px,9vw,120px) 0}
+.lead{font-size:clamp(1.05rem,2.1vw,1.3rem); color:var(--cream-dim); max-width:62ch}
+.eyebrow{font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--sun-soft); font-weight:700; margin:0 0 .9em}
+
+.head{position:sticky; top:0; z-index:50; backdrop-filter:blur(10px);
+  background:rgba(14,12,32,.62); border-bottom:1px solid var(--line)}
+.head .wrap{display:flex; align-items:center; justify-content:space-between; height:64px; gap:18px}
+.brand{display:flex; align-items:baseline; gap:.14em; font-family:"Fraunces",serif; color:var(--white); font-size:1.25rem; font-weight:600}
+.brand span{color:var(--gold); font-weight:400}
+.nav{display:flex; gap:26px; align-items:center}
+.nav a{color:var(--cream-dim); font-weight:600; font-size:.96rem}
+.nav a:hover{color:var(--white); text-decoration:none}
+.btn{display:inline-flex; align-items:center; gap:.55em; border-radius:999px; padding:.7em 1.25em;
+  font-weight:700; font-size:.96rem; border:1px solid transparent; cursor:pointer; transition:transform .18s var(--ease)}
+.btn:hover{text-decoration:none; transform:translateY(-1px)}
+.btn-soon{background:linear-gradient(180deg,var(--sun-soft),var(--sun)); color:#3a1a0c}
+.btn-ghost{background:transparent; border-color:var(--line); color:var(--cream)}
+.btn-ghost:hover{border-color:rgba(243,231,207,.4)}
+.btn svg{width:18px;height:18px}
+@media(max-width:760px){.nav a:not(.btn){display:none}}
+
+.hero{padding-top:clamp(28px,5vw,56px)}
+.hero .wrap{display:flex; flex-direction:column; align-items:center; text-align:center; gap:clamp(26px,4vw,44px)}
+.hero-fig{width:100%; max-width:820px}
+.hero-fig .frame{border-radius:var(--r); overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.45); border:1px solid rgba(243,231,207,.10); background:#12172a}
+.hero-fig canvas{display:block; width:100%; height:auto; aspect-ratio:68/43}
+.hero-text{max-width:780px}
+.hero .lead{margin:0 auto}
+.hero-cta{display:flex; gap:14px; flex-wrap:wrap; margin-top:1.5em; justify-content:center}
+.slogan-en{margin-top:1.1em; color:var(--cream-faint); font-style:italic; font-family:"Fraunces",serif}
+
+.center{text-align:center; max-width:760px; margin:0 auto}
+
+.cards{display:grid; gap:20px; grid-template-columns:repeat(3,1fr)}
+@media(max-width:820px){.cards{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--card),var(--card-2)); border:1px solid var(--line); border-radius:var(--r); padding:28px}
+.card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(239,138,90,.16); color:var(--sun-soft); margin-bottom:14px}
+.card .ic svg{width:24px;height:24px}
+.card h3{color:var(--white); margin-bottom:.3em}
+.card p{color:var(--cream-dim); font-size:1rem; margin:0}
+
+.scenes{display:grid; gap:22px; grid-template-columns:repeat(3,1fr)}
+@media(max-width:820px){.scenes{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.scenes{grid-template-columns:1fr}}
+.scene{border-radius:var(--r); overflow:hidden; border:1px solid rgba(243,231,207,.12); background:#0b0a1c; position:relative; box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.scene svg{display:block; width:100%; height:auto}
+.scene .tag{position:absolute; left:14px; bottom:12px; background:rgba(11,10,28,.55); backdrop-filter:blur(6px); padding:.3em .7em; border-radius:999px; font-size:.8rem; font-weight:700; color:var(--cream)}
+.scene-more{display:grid; place-items:center; text-align:center; min-height:220px; background:linear-gradient(180deg,var(--card),var(--card-2)); padding:24px; grid-column:span 2}
+@media(max-width:520px){.scene-more{grid-column:span 1}}
+.scene-more .big{font-family:"Fraunces",serif; font-size:2.6rem; color:var(--white); line-height:1}
+.scene-more p{margin:.4em 0 0; color:var(--cream-dim); font-size:.95rem; max-width:42ch}
+
+.values{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:8px}
+@media(max-width:820px){.values{grid-template-columns:1fr 1fr}}
+.value{display:flex; gap:12px; align-items:flex-start; background:rgba(243,231,207,.04); border:1px solid var(--line); border-radius:16px; padding:18px}
+.value svg{width:22px;height:22px;color:var(--sun-soft);flex:none;margin-top:2px}
+.value b{color:var(--white); display:block; font-size:1rem}
+.value span{color:var(--cream-dim); font-size:.92rem}
+
+.chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px}
+.chip{background:rgba(243,231,207,.06); border:1px solid var(--line); border-radius:999px; padding:.5em 1em; font-weight:600; font-size:.95rem; color:var(--cream-dim)}
+
+.faq{max-width:780px; margin:0 auto}
+details{border-bottom:1px solid var(--line); padding:18px 0}
+summary{cursor:pointer; font-weight:700; color:var(--white); list-style:none; font-size:1.08rem; display:flex; justify-content:space-between; gap:16px; align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+"; color:var(--sun-soft); font-size:1.5rem; line-height:1; transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--cream-dim); margin:.8em 0 0; font-size:1rem}
+
+footer{border-top:1px solid var(--line); padding:48px 0; color:var(--cream-faint); font-size:.95rem}
+footer .wrap{display:flex; flex-wrap:wrap; gap:18px; justify-content:space-between; align-items:center}
+footer a{color:var(--cream-dim)}
+
+.reveal{opacity:0; transform:translateY(22px); transition:opacity .8s var(--ease), transform .8s var(--ease)}
+.reveal.in{opacity:1; transform:none}
+
+.tw{animation:twk 3s ease-in-out infinite}.tw2{animation:twk 4.4s ease-in-out infinite .9s}
+.tw3{animation:twk 2.3s ease-in-out infinite 1.6s}.tw4{animation:twk 5.2s ease-in-out infinite .4s}
+.glow{animation:glw 6s ease-in-out infinite}
+.shoot{opacity:0; animation:sht 8s ease-in-out infinite 2s}
+@keyframes twk{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes glw{0%,100%{opacity:.95}50%{opacity:.62}}
+@keyframes sht{0%{transform:translate(0,0);opacity:0}4%{opacity:0}9%{opacity:1}22%{opacity:1}32%{transform:translate(210px,136px);opacity:0}100%{transform:translate(210px,136px);opacity:0}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1!important; transform:none!important; transition:none}
+  .tw,.tw2,.tw3,.tw4,.glow,.shoot{animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <div class="brand">Wo<span>·minute</span></div>
+    <nav class="nav">
+      <a href="#scenes">Les scènes</a>
+      <a href="#milieux">Pour les milieux</a>
+      <a href="#support">Support</a>
+      <a class="btn btn-soon" href="#telecharger">Bientôt sur l'App Store</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO : scène Vagues reproduite en canvas, image par image (VaguesView.swift) -->
+<section class="hero">
+  <div class="wrap">
+
+    <div class="hero-fig reveal">
+      <div class="frame">
+        <canvas id="cvVagues" width="680" height="430" role="img" aria-label="Scène Vagues de Wo-Minute : un coucher de soleil sur la mer, animé. Le soleil descend à gauche, un voilier dérive, le reflet scintille, des vagues roulent et un dauphin bondit."></canvas>
+      </div>
+    </div>
+
+    <div class="hero-text reveal">
+      <p class="eyebrow">Un minuteur qui se regarde</p>
+      <h1>On fait disparaître le temps.</h1>
+      <p class="lead">Le temps ne s'affiche pas&nbsp;: il se regarde. Une scène vivante donne aux yeux quelque chose à suivre&nbsp;— et au temps, une forme qu'on peut accompagner plutôt que subir.</p>
+      <div class="hero-cta">
+        <a class="btn btn-soon" href="#telecharger">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 1.3c.1 1-.3 2-.9 2.7-.7.8-1.7 1.4-2.7 1.3-.1-1 .3-2 .9-2.7.7-.8 1.8-1.4 2.7-1.3zM19.5 16.9c-.5 1.2-.8 1.7-1.5 2.7-1 1.4-2.3 3.1-4 3.1-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.6-3.9-3C-.2 16.1-.6 11 1.4 8.3c1-1.4 2.6-2.3 4.1-2.3 1.6 0 2.6 1 3.9 1 1.3 0 2-1 3.9-1 1.4 0 2.9.8 3.9 2.1-3.4 1.9-2.9 6.8.4 8.8z"/></svg>
+          Bientôt sur l'App Store
+        </a>
+        <a class="btn btn-ghost" href="#scenes">Découvrir les scènes</a>
+      </div>
+      <p class="slogan-en">« We make time disappear. »</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMESSE -->
+<section id="pourquoi">
+  <div class="wrap center reveal">
+    <p class="eyebrow">Née sur le terrain</p>
+    <h2>Quand l'attente déborde, il faut un point d'ancrage.</h2>
+    <p class="lead" style="margin:0 auto">Certains moments demandent quelque chose à quoi se raccrocher&nbsp;: une transition entre deux activités, une émotion qui monte, une attente qui s'étire. Une scène qui avance doucement donne aux yeux un appui et au corps le temps de redescendre. Pas de chiffres qui pressent, pas d'écran qui crie&nbsp;: un petit monde qui avance, et qui montre que ça avance.</p>
+  </div>
+</section>
+
+<!-- SCÈNES -->
+<section id="scenes">
+  <div class="wrap">
+    <div class="reveal" style="max-width:680px; margin-bottom:38px">
+      <p class="eyebrow">Le temps qui se regarde</p>
+      <h2>Des scènes vivantes, calculées en direct.</h2>
+      <p class="lead">Chaque scène est une petite histoire qui se déroule pendant le décompte&nbsp;— jamais une vidéo qui boucle. On voit le temps avancer sans jamais le lire.</p>
+    </div>
+    <div class="scenes reveal">
+
+      <figure class="scene" style="margin:0">
+        <svg viewBox="0 0 680 680" role="img" xmlns="http://www.w3.org/2000/svg" aria-label="Scène Étoiles">
+          <title>Wo-Minute, scène Étoiles</title>
+          <defs>
+            <radialGradient id="esky" cx="50%" cy="38%" r="78%"><stop offset="0%" stop-color="#2a2552"/><stop offset="58%" stop-color="#171433"/><stop offset="100%" stop-color="#0b0a1c"/></radialGradient>
+            <radialGradient id="emg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fff6e0" stop-opacity=".85"/><stop offset="32%" stop-color="#ffe7b0" stop-opacity=".32"/><stop offset="100%" stop-color="#ffe7b0" stop-opacity="0"/></radialGradient>
+            <radialGradient id="emoon" cx="40%" cy="38%" r="68%"><stop offset="0%" stop-color="#fffdf7"/><stop offset="100%" stop-color="#f1e0b9"/></radialGradient>
+          </defs>
+          <rect width="680" height="680" fill="url(#esky)"/>
+          <g fill="#fff">
+            <circle class="tw" cx="58" cy="70" r="1.6"/><circle class="tw2" cx="120" cy="48" r="1"/><circle class="tw3" cx="180" cy="92" r="2.1"/><circle class="tw" cx="250" cy="60" r="1.2"/><circle class="tw4" cx="330" cy="44" r="1.7"/><circle class="tw2" cx="410" cy="74" r="1"/><circle class="tw3" cx="500" cy="52" r="2.3"/><circle class="tw" cx="582" cy="88" r="1.3"/><circle class="tw4" cx="636" cy="58" r="1.6"/>
+            <circle class="tw2" cx="40" cy="150" r="1.2"/><circle class="tw3" cx="96" cy="200" r="2"/><circle class="tw" cx="150" cy="168" r="1"/><circle class="tw4" cx="214" cy="220" r="1.5"/><circle class="tw2" cx="300" cy="150" r="1"/><circle class="tw" cx="470" cy="170" r="1.4"/><circle class="tw3" cx="560" cy="210" r="2.2"/><circle class="tw2" cx="620" cy="160" r="1.1"/><circle class="tw4" cx="648" cy="240" r="1.5"/>
+            <circle class="tw" cx="64" cy="300" r="1.8"/><circle class="tw2" cx="130" cy="340" r="1"/><circle class="tw3" cx="180" cy="290" r="1.3"/><circle class="tw4" cx="560" cy="320" r="1.6"/><circle class="tw2" cx="610" cy="360" r="1.1"/><circle class="tw" cx="640" cy="300" r="2"/>
+            <circle class="tw3" cx="44" cy="420" r="1.3"/><circle class="tw" cx="110" cy="470" r="2.1"/><circle class="tw2" cx="170" cy="430" r="1"/><circle class="tw4" cx="240" cy="486" r="1.4"/><circle class="tw" cx="300" cy="452" r="1"/><circle class="tw3" cx="380" cy="488" r="1.7"/><circle class="tw2" cx="450" cy="446" r="1.1"/><circle class="tw4" cx="520" cy="478" r="1.5"/><circle class="tw" cx="590" cy="436" r="1"/><circle class="tw3" cx="636" cy="470" r="2"/>
+            <circle class="tw2" cx="70" cy="560" r="1.5"/><circle class="tw" cx="140" cy="600" r="1"/><circle class="tw3" cx="210" cy="558" r="1.9"/><circle class="tw4" cx="290" cy="610" r="1.2"/><circle class="tw2" cx="368" cy="566" r="1"/><circle class="tw" cx="446" cy="606" r="1.6"/><circle class="tw4" cx="524" cy="560" r="1.1"/><circle class="tw3" cx="600" cy="600" r="1.8"/><circle class="tw2" cx="648" cy="556" r="1.2"/>
+          </g>
+          <g class="shoot"><path d="M120 90 l-46 -30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".55"/><circle cx="120" cy="90" r="2.6" fill="#fff"/></g>
+          <circle class="glow" cx="437" cy="296" r="190" fill="url(#emg)"/>
+          <circle cx="437" cy="296" r="86" fill="url(#emoon)"/>
+          <circle cx="410" cy="272" r="11" fill="#e7d3a6" opacity=".45"/><circle cx="462" cy="318" r="7" fill="#e7d3a6" opacity=".4"/><circle cx="448" cy="266" r="5" fill="#e7d3a6" opacity=".35"/>
+          <text x="246" y="384" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="240" fill="#fff" letter-spacing="-4">W</text>
+          <text x="340" y="560" text-anchor="middle" font-family="'Century Gothic',Futura,sans-serif" font-weight="300" font-size="92" letter-spacing="10" fill="#f3e7cf">minute</text>
+        </svg>
+        <figcaption class="tag">Étoiles (icône)</figcaption>
+      </figure>
+
+      <div class="scene scene-more">
+        <div>
+          <div class="big">12 scènes</div>
+          <p>Vagues, Pluie, Gouttes, Briques, Bougie, Ville, Flocons, Spirale, Étoiles, Balles… Chacune sera reproduite ici, fidèle à l'app, en mouvement.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- POUR LES MILIEUX -->
+<section id="milieux">
+  <div class="wrap">
+    <div class="reveal" style="max-width:720px; margin-bottom:40px">
+      <p class="eyebrow">Pour les intervenants et les milieux</p>
+      <h2>Un repère visuel du temps, au service de l'accompagnement.</h2>
+      <p class="lead">Wo-Minute est conçue par un intervenant en réadaptation, à partir du geste quotidien. En classe, en centre de jour, en clinique ou à la maison, elle rend le temps concret et apaisant — un appui pour accompagner, jamais un outil qui contraint.</p>
+    </div>
+    <div class="cards reveal">
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 17l6-6 4 4 6-7"/></svg></div>
+        <h3>Transitions</h3>
+        <p>Annoncer et adoucir le passage d'une activité à l'autre. La scène avance, le changement se voit venir.</p>
+      </article>
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c3 4 6 6 6 10a6 6 0 11-12 0c0-4 3-6 6-10z"/></svg></div>
+        <h3>Retour au calme</h3>
+        <p>Quand les émotions montent, un mouvement lent donne aux yeux un point d'ancrage et au corps le temps de redescendre.</p>
+      </article>
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Attendre autrement</h3>
+        <p>Une attente difficile devient un moment à regarder. On voit ce qui reste, on voit que ça avance.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- AU QUOTIDIEN -->
+<section id="quotidien">
+  <div class="wrap center reveal">
+    <p class="eyebrow">Et partout ailleurs</p>
+    <h2>Au quotidien aussi.</h2>
+    <p class="lead" style="margin:0 auto 1.4em">Choisissez une durée, posez l'appareil, laissez la scène faire le reste.</p>
+    <div class="chips" style="justify-content:center">
+      <span class="chip">Retour au calme</span>
+      <span class="chip">Temps d'écran des enfants</span>
+      <span class="chip">Salle d'attente</span>
+      <span class="chip">Travail en intervalles</span>
+      <span class="chip">Minuterie de cuisine</span>
+      <span class="chip">Concentration</span>
+    </div>
+  </div>
+</section>
+
+<!-- ENGAGEMENTS -->
+<section id="engagements">
+  <div class="wrap">
+    <div class="reveal" style="max-width:680px; margin-bottom:24px">
+      <p class="eyebrow">Nos engagements</p>
+      <h2>Rien à cacher, rien à collecter.</h2>
+    </div>
+    <div class="values reveal">
+      <div class="value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 5-3 7-7 9-4-2-7-4-7-9V6z"/></svg><div><b>Aucune donnée collectée</b><span>L'app ne sait rien de vous.</span></div></div>
+      <div class="value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M5 5l14 14"/></svg><div><b>Aucune publicité</b><span>Jamais d'interruption.</span></div></div>
+      <div class="value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/><path d="M5 20a7 7 0 0114 0"/></svg><div><b>Aucun compte</b><span>On ouvre, et ça fonctionne.</span></div></div>
+      <div class="value"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h18M3 12a9 9 0 0118 0M3 12a9 9 0 0018 0"/></svg><div><b>Hors ligne</b><span>Fonctionne sans réseau.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TÉLÉCHARGER -->
+<section id="telecharger">
+  <div class="wrap center reveal">
+    <h2>Bientôt sur l'App Store.</h2>
+    <p class="lead" style="margin:0 auto 1.4em">Wo-Minute arrive sur iPhone et iPad. En attendant, une question&nbsp;? Écrivez-nous.</p>
+    <a class="btn btn-soon" href="mailto:support@wominute.com" style="font-size:1.05rem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg>
+      support@wominute.com
+    </a>
+  </div>
+</section>
+
+<!-- SUPPORT / FAQ -->
+<section id="support">
+  <div class="wrap">
+    <div class="center reveal" style="margin-bottom:30px">
+      <p class="eyebrow">Support</p>
+      <h2>Questions fréquentes</h2>
+    </div>
+    <div class="faq reveal">
+      <details><summary>Le minuteur sonne-t-il si l'écran est éteint&nbsp;?</summary><p>Oui, si vous avez autorisé les notifications au premier lancement. Sinon&nbsp;: Réglages ▸ Wo-Minute ▸ Notifications.</p></details>
+      <details><summary>Y a-t-il du son&nbsp;?</summary><p>Une alerte sonore, une vibration ou une annonce vocale à la fin, au choix. Les sons d'alerte respectent le bouton silencieux de l'appareil.</p></details>
+      <details><summary>Est-ce que ça fonctionne hors ligne&nbsp;?</summary><p>Entièrement. Aucune connexion n'est requise, aucune donnée n'est envoyée.</p></details>
+      <details><summary>Combien de temps peut durer un minuteur&nbsp;?</summary><p>De 1 à 12 minutes, avec la possibilité d'enchaîner des phases (travail / pause, répétées).</p></details>
+      <details><summary>Une autre question&nbsp;?</summary><p>Écrivez à <a href="mailto:support@wominute.com">support@wominute.com</a> — on répond en quelques jours.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">Wo<span>·minute</span></div>
+    <div>Conçue au Québec, Canada.</div>
+    <div><a href="mailto:support@wominute.com">support@wominute.com</a> · <a href="politique-confidentialite">Confidentialité</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  function revealAll(){ els.forEach(function(el){ el.classList.add('in'); }); }
+  if(!('IntersectionObserver' in window)){ revealAll(); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.08});
+  els.forEach(function(el){ io.observe(el); });
+  // Filet de sécurité : si l'observateur ne se déclenche pas (aperçus, iframes…), tout révéler.
+  setTimeout(revealAll, 1200);
+})();
+
+// ── Scène Vagues : port fidèle de VaguesView.swift (Canvas, image par image) ──
+(function(){
+  var cv = document.getElementById('cvVagues');
+  if(!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  var W = 680, H = 430, scale = 1;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    var cssW = cv.clientWidth || 680;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(cssW * dpr);
+    cv.height = Math.round(cssW * H / W * dpr);
+    scale = cssW / W * dpr;
+  }
+
+  function hsb(h,s,v){
+    var i=Math.floor(h*6), f=h*6-i, p=v*(1-s), q=v*(1-f*s), t=v*(1-(1-f)*s), r,g,b;
+    switch(((i%6)+6)%6){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;default:r=v;g=p;b=q;}
+    return [r,g,b];
+  }
+  function mix(a,b,f){ f=Math.max(0,Math.min(1,f)); return [a[0]+(b[0]-a[0])*f, a[1]+(b[1]-a[1])*f, a[2]+(b[2]-a[2])*f]; }
+  function rgba(c,o){ return 'rgba('+(c[0]*255|0)+','+(c[1]*255|0)+','+(c[2]*255|0)+','+(o==null?1:o)+')'; }
+  function frac(v){ return v - Math.floor(v); }
+
+  // Palette « Terracotta » (Modeles.swift, id 0)
+  var accent=[0.79,0.44,0.30], ch=210/360, cs=0.35;
+  var cielHaut = hsb(ch, cs*0.8, 0.20);
+  var cielBas  = hsb(ch, cs*0.55, 0.62);
+  var prog = 0.55;
+  function couleurSoleil(p){ var k=Math.min(p*0.9,0.9); return [accent[0]+(1-accent[0])*k, accent[1]+(0.30-accent[1])*k, accent[2]+(0.12-accent[2])*k]; }
+
+  var yH = 0.42*H, shoreY = H-22, shoreAmp = 9, rS = 26;
+  var vagues=[], dauphins=[], oiseaux=[];
+  var lastWave=-99, lastDauphin=0, lastBird=-12, did=0, oid=0, t0=performance.now()/1000;
+
+  function vaguePhase(x, now){ return (x/W)*Math.PI*5 + now*2; }
+
+  function spawn(now){
+    if(now-lastWave >= 2){ vagues.push(now); lastWave=now; }
+    vagues = vagues.filter(function(b){ return now-b <= 9; });
+    if(now-lastDauphin >= 6.5){
+      var dir=(did%2==0)?1:-1;
+      var xs=frac(Math.sin(did*7.3)*137.5)*0.6+0.2;
+      var dist=0.35+0.32*(did%3);
+      dauphins.push({birth:now, dir:dir, xStart:xs, dist:dist}); did++; lastDauphin=now;
+    }
+    dauphins = dauphins.filter(function(d){ return now-d.birth <= 2.2; });
+    if(now-lastBird >= 21){ oiseaux.push({birth:now, dir:(oid%2==0)?1:-1}); oid++; lastBird=now; }
+    oiseaux = oiseaux.filter(function(v){ return now-v.birth <= 18; });
+  }
+
+  function draw(now){
+    ctx.setTransform(scale,0,0,scale,0,0);
+    ctx.clearRect(0,0,W,H);
+    var soleil=couleurSoleil(prog), sunX=W*0.30, sunY=(0.12+0.30*prog)*H, chaud=prog;
+
+    var cielH2=mix(cielHaut,[0.24,0.14,0.34],chaud*0.85);
+    var cielMid=mix(mix(cielHaut,cielBas,0.5),[0.98,0.52,0.52],chaud*0.9);
+    var cielB2=mix(cielBas,[1.0,0.62,0.34],chaud);
+    var sky=ctx.createLinearGradient(0,0,0,yH);
+    sky.addColorStop(0,rgba(cielH2)); sky.addColorStop(0.55,rgba(cielMid)); sky.addColorStop(1,rgba(cielB2));
+    ctx.fillStyle=sky; ctx.fillRect(0,0,W,yH);
+
+    etoiles(now);
+
+    var halo=ctx.createRadialGradient(sunX,sunY,0,sunX,sunY,95);
+    halo.addColorStop(0,rgba(soleil,0.6)); halo.addColorStop(1,rgba(soleil,0));
+    ctx.fillStyle=halo; ctx.beginPath(); ctx.arc(sunX,sunY,95,0,7); ctx.fill();
+    ctx.fillStyle=rgba(soleil); ctx.beginPath(); ctx.arc(sunX,sunY,rS,0,7); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.beginPath(); ctx.arc(sunX,sunY,rS*0.5,0,7); ctx.fill();
+
+    oiseaux.forEach(function(v){ vol(v,now); });
+
+    ctx.beginPath(); ctx.moveTo(0,yH); ctx.lineTo(W,yH);
+    for(var xb=W; xb>=0; xb-=6){ ctx.lineTo(xb, shoreY+shoreAmp*Math.sin(vaguePhase(xb,now)+3)); }
+    ctx.closePath();
+    var merChaude=mix(accent,soleil,chaud*0.40);
+    ctx.save(); ctx.clip();
+    ctx.fillStyle=rgba(merChaude); ctx.fillRect(0,yH-2,W,H-yH+4);
+    var g1=ctx.createLinearGradient(0,yH,0,yH+(H-yH)*0.5);
+    g1.addColorStop(0,rgba([1.0,0.58,0.40],chaud*0.55)); g1.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g1; ctx.fillRect(0,yH-2,W,H);
+    var g2=ctx.createLinearGradient(0,yH,0,H);
+    g2.addColorStop(0,'rgba(0,0,0,0)'); g2.addColorStop(1,'rgba(0,0,0,0.28)');
+    ctx.fillStyle=g2; ctx.fillRect(0,yH-2,W,H);
+    ctx.restore();
+
+    for(var yy=yH; yy<shoreY-4; yy+=6){
+      var f=(yy-yH)/(shoreY-yH);
+      var scint=0.5+0.5*Math.sin(now*3+yy*0.12);
+      var larg=(rS*0.95)*(1-f)*(0.5+0.5*scint);
+      ctx.fillStyle=rgba(soleil,0.95*(1-f)); ctx.fillRect(sunX-larg,yy,2*larg,3);
+      ctx.fillStyle='rgba(255,255,255,'+(0.5*(1-f)*scint)+')'; ctx.fillRect(sunX-larg*0.4,yy,larg*0.8,3);
+    }
+
+    vagues.forEach(function(b){
+      var age=now-b; if(age>9) return; var p=age/9;
+      var wy=yH+(shoreY-yH)*p, amp=1.5+(shoreAmp-1.5)*p;
+      ctx.beginPath(); ctx.moveTo(0, wy+amp*Math.sin(vaguePhase(0,now)+p*3));
+      for(var xv=0; xv<=W; xv+=6){ ctx.lineTo(xv, wy+amp*Math.sin(vaguePhase(xv,now)+p*3)); }
+      ctx.strokeStyle='rgba(255,255,255,'+(0.18+0.5*p*p)+')'; ctx.lineWidth=1+1.2*p; ctx.stroke();
+    });
+
+    bateau(((now*0.012)%1.24-0.12)*W, yH-4, 0.92);
+
+    dauphins.forEach(function(d){ var age=now-d.birth; if(age>=0&&age<=1.6) dauphin(d,age,now); });
+  }
+
+  function etoiles(now){
+    if(prog<=0.30) return; var zone=yH*0.80;
+    for(var i=0;i<46;i++){
+      var hx=frac(Math.sin(i*12.9898)*43758.5453), hy=frac(Math.sin(i*78.233)*12733.1);
+      var sx=hx*W, sy=hy*zone, hauteur=sy/zone, seuil=0.30+0.55*hauteur;
+      var vis=Math.max(0,Math.min((prog-seuil)/0.25,1)); if(vis<=0) continue;
+      var eclat=0.55+0.40*frac(Math.sin(i*5.9)*311), r=0.6+1.2*frac(Math.sin(i*3.3)*991);
+      var col=(i%6==0)?[1.0,0.85,0.7]:[1,1,1];
+      var frem=0.65+0.35*Math.sin(now*1.1+i*2.3), hr=r*(2.0+0.7*frem);
+      var hg=ctx.createRadialGradient(sx,sy,0,sx,sy,hr);
+      hg.addColorStop(0,rgba(col,vis*eclat*frem*0.45)); hg.addColorStop(1,rgba(col,0));
+      ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(sx,sy,hr,0,7); ctx.fill();
+      ctx.fillStyle=rgba(col,vis*eclat); ctx.beginPath(); ctx.arc(sx,sy,r,0,7); ctx.fill();
+    }
+  }
+
+  function bateau(x,y,op){
+    ctx.save(); ctx.translate(x,y);
+    ctx.fillStyle='rgba(8,12,28,'+op+')'; ctx.strokeStyle='rgba(8,12,28,'+op+')';
+    ctx.beginPath(); ctx.moveTo(-22,0); ctx.lineTo(22,0); ctx.quadraticCurveTo(0,13,-22,0); ctx.closePath(); ctx.fill();
+    ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(0,-1); ctx.lineTo(0,-38); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(3,-36); ctx.lineTo(3,-3); ctx.lineTo(21,-3); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-2,-28); ctx.lineTo(-2,-3); ctx.lineTo(-15,-3); ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+
+  function dauphin(d,age,now){
+    var t=age/1.6, sc=0.5+0.6*d.dist, span=0.32*W, arcH=40+55*d.dist, seaY=yH+8+26*d.dist;
+    var x=d.xStart*W + d.dir*span*t, y=seaY-Math.sin(t*Math.PI)*arcH;
+    var dy=-arcH*Math.PI*Math.cos(t*Math.PI), tilt=Math.atan2(dy,span), op=0.65+0.3*d.dist;
+    ctx.save(); ctx.translate(x,y); ctx.scale(d.dir*sc, sc); ctx.rotate(tilt);
+    ctx.fillStyle='rgba(8,14,32,'+op+')';
+    ctx.beginPath(); ctx.moveTo(18,0); ctx.quadraticCurveTo(0,-10,-16,-1); ctx.lineTo(-23,-7); ctx.lineTo(-15,1); ctx.lineTo(-23,6); ctx.quadraticCurveTo(-2,9,18,0); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(2,-8); ctx.lineTo(9,-8); ctx.lineTo(3,-18); ctx.closePath(); ctx.fill();
+    ctx.restore();
+    if(t<0.12||t>0.88){ ctx.save(); ctx.translate(x,seaY); ctx.fillStyle='rgba(255,255,255,0.7)';
+      [-6,0,6].forEach(function(dx){ ctx.beginPath(); ctx.arc(dx,-0.5,1.5,0,7); ctx.fill(); }); ctx.restore(); }
+  }
+
+  function vol(v,now){
+    var age=now-v.birth, t=age/18, travel=t*1.2-0.1;
+    var cx=v.dir>0?travel*W:(1-travel)*W, cy=0.15*H+8*Math.sin(now*0.6);
+    var op=Math.min(t/0.12,1)*Math.min((1-t)/0.12,1);
+    oiseau(cx,cy,now,0,op);
+    for(var j=1;j<=2;j++){ var back=v.dir*j*17, bas=j*10;
+      oiseau(cx-back,cy-bas,now,j,op); oiseau(cx-back,cy+bas,now,j+0.5,op); }
+  }
+  function oiseau(x,y,now,phase,op){
+    var flap=0.5+0.5*Math.sin(now*8+phase);
+    ctx.strokeStyle='rgba(20,16,36,'+(0.7*op)+')'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x-9,y); ctx.quadraticCurveTo(x-5,y-6*flap,x,y-3); ctx.quadraticCurveTo(x+5,y-6*flap,x+9,y); ctx.stroke();
+  }
+
+  var raf=0;
+  function frame(){
+    var now=performance.now()/1000 - t0;
+    spawn(now); draw(now);
+    if(!reduce && !document.hidden) raf=requestAnimationFrame(frame);
+  }
+  function start(){
+    resize();
+    if(reduce){ spawn(3.0); draw(3.0); }
+    else { cancelAnimationFrame(raf); raf=requestAnimationFrame(frame); }
+  }
+  window.addEventListener('resize', function(){ resize(); if(reduce){ draw(3.0);} });
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden && !reduce){ cancelAnimationFrame(raf); raf=requestAnimationFrame(frame); }
+  });
+  if(document.readyState!=='loading') start(); else window.addEventListener('load', start);
+})();
+</script>
+</body>
+</html>
