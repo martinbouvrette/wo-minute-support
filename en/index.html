@@ -67,6 +67,40 @@
     </div>
   </section>
 
+  <section id="pourquoi">
+    <div class="wrap">
+      <div class="carte apparait">
+        <div class="etiquette">Why a painting</div>
+        <h2>The same time, three ways.</h2>
+        <p class="lead">Twenty seconds, shown three times at once. Start them, and notice which one you follow.</p>
+        <div class="trois-facons">
+          <div class="facon">
+            <div class="vue"><div class="chiffres" id="b-chiffres">0:20</div></div>
+            <h3>A number</h3>
+            <p>You need to read the clock, and count down in your head. For many people, “0:12” means nothing.</p>
+          </div>
+          <div class="facon">
+            <div class="vue claire"><svg class="disque" viewBox="0 0 200 200" role="img" aria-label="A red-disc timer shrinking">
+              <circle cx="100" cy="100" r="97" fill="#fbfaf7" stroke="#d6d2c8" stroke-width="2"/>
+              <g id="b-crans"></g>
+              <path id="b-secteur" fill="#d9262c"/>
+              <circle cx="100" cy="100" r="9" fill="#f0eee8" stroke="#b9b4a8" stroke-width="1.5"/>
+            </svg></div>
+            <h3>A red disc</h3>
+            <p>You see what's left without reading the clock: it's a staple of many classrooms. But there's nothing else to look at — the wait is still a wait.</p>
+          </div>
+          <div class="facon">
+            <div class="vue"><canvas id="b-scene" role="img" aria-label="A sailboat crossing the sea as the sun sets"></canvas></div>
+            <h3>A painting</h3>
+            <p>You see that it's moving along, and there's something to follow in the meantime. When the lighthouse lights up, it's over.</p>
+          </div>
+        </div>
+        <p class="question" id="b-question" aria-live="polite"></p>
+        <button class="btn btn-plein" id="b-go" type="button">Start twenty seconds</button>
+      </div>
+    </div>
+  </section>
+
   <section id="paintings">
     <div class="wrap">
       <div class="carte apparait">
@@ -102,24 +136,31 @@
       <div class="carte apparait">
         <div class="etiquette">How it works</div>
         <h2>Two gestures, and time disappears.</h2>
-        <div class="gestes">
-          <div class="geste">
-            <div class="tel"><img src="/scenes/galerie.jpg" alt="The home gallery: a wall of living paintings" loading="lazy"></div>
-            <span class="num">1</span>
-            <h3>Tap a painting.</h3>
-            <p>The home screen is a gallery: living paintings float on the wall. You choose what you want to watch, not a number.</p>
+        <p class="lead">In the app, you first tap a painting in the gallery. Here, the sailboat is already chosen: turn the ring, pick a color, start — then let it be.</p>
+        <div class="essai">
+          <div class="ecran">
+            <canvas id="a-scene" role="img" aria-label="A sailboat crossing the sea as the sun sets"></canvas>
+            <button class="rond" id="a-rond" type="button" aria-label="Pause">
+              <svg viewBox="0 0 58 58" aria-hidden="true"><circle cx="29" cy="29" r="24" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="4"/>
+                <circle id="a-reste" cx="29" cy="29" r="24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" transform="rotate(-90 29 29)"/>
+                <g id="a-icone-pause" fill="#fff"><rect x="22" y="21" width="4.5" height="16" rx="1.5"/><rect x="31.5" y="21" width="4.5" height="16" rx="1.5"/></g>
+                <path id="a-icone-jouer" d="M24 20 L38 29 L24 38 Z" fill="#fff" style="display:none"/></svg>
+            </button>
+            <div class="fin" id="a-fin" aria-live="polite">It's over.</div>
           </div>
-          <div class="geste">
-            <div class="tel"><img src="/scenes/tableau.jpg" alt="The open painting, the time ring and the colors" loading="lazy"></div>
-            <span class="num">2</span>
-            <h3>Turn the ring.</h3>
-            <p>From 1 to 12 minutes, one note per notch. A color, if you like: the painting changes before your eyes. Then “Let's go”.</p>
-          </div>
-          <div class="geste">
-            <div class="tel"><video muted loop playsinline preload="none" poster="/scenes/petales.jpg" aria-label="The cherry tree moving along during the timer"><source src="/scenes/petales.mp4" type="video/mp4"></video></div>
-            <span class="num">3</span>
-            <h3>Set the device down.</h3>
-            <p>The painting does the rest. No numbers tick by: you see that it's moving along, and when it's done.</p>
+          <div class="reglages">
+            <ol><li><b>1</b> Turn the ring</li><li><b>2</b> A color, if you like</li><li><b>3</b> Set the device down</li></ol>
+            <svg id="a-anneau" viewBox="0 0 220 220" role="slider" aria-label="Length in minutes" aria-valuemin="1" aria-valuemax="12" tabindex="0">
+              <circle cx="110" cy="110" r="88" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="16"/>
+              <circle id="a-arc" cx="110" cy="110" r="88" fill="none" stroke="#ef8a5a" stroke-width="16" stroke-linecap="round" transform="rotate(-90 110 110)"/>
+              <g id="a-crans"></g>
+              <text id="a-min" x="110" y="112" text-anchor="middle" fill="#fff" font-family="Fraunces, serif" font-size="46">3</text>
+              <text x="110" y="140" text-anchor="middle" fill="rgba(246,236,216,.7)" font-family="Nunito, sans-serif" font-size="15">minutes</text>
+            </svg>
+            <div class="pm"><button id="a-moins" type="button" aria-label="One minute less">−</button><button id="a-plus" type="button" aria-label="One minute more">+</button></div>
+            <div class="couleurs" id="a-couleurs"></div>
+            <button class="btn btn-plein" id="a-go" type="button">Let's go</button>
+            <p class="note">Sped-up demo: here, a minute lasts five seconds. In the app, it lasts a real minute.</p>
           </div>
         </div>
       </div>
@@ -136,6 +177,16 @@
           <div><h3>Transitions</h3><p>Announce and soften the move from one activity to the next. The painting moves along, and the change can be seen coming.</p></div>
           <div><h3>Calming down</h3><p>When emotions rise, a slow movement gives the eyes an anchor and the body time to settle.</p></div>
           <div><h3>Waiting differently</h3><p>A hard wait becomes something to watch. You see what's left, you see that it's moving along.</p></div>
+        </div>
+        <p class="lead" style="margin-top:34px; margin-bottom:0">For which moment? Pick one: a painting, a length, three gestures.</p>
+        <div class="moments" id="c-moments"></div>
+        <div class="conseil">
+          <div class="tel"><video id="c-video" muted loop playsinline preload="none"></video></div>
+          <dl class="fiche">
+            <dt>A painting</dt><dd id="c-tableau"></dd>
+            <dt>A length</dt><dd id="c-duree"></dd>
+            <dt>Three gestures</dt><dd><ol id="c-gestes"></ol></dd>
+          </dl>
         </div>
       </div>
     </div>
@@ -252,5 +303,7 @@
 </footer>
 
 <script src="/ciel.js"></script>
+<script>window.WM_TEXTES = {"b": {"relancer": "Start again", "milieu": "Without looking at the numbers: how much is left?", "fin": "Which one were you watching?"}, "a": {"parti": "Let's go", "recommencer": "Start over", "pause": "Pause", "reprendre": "Resume", "couleurs": {"corail": "Coral", "lavande": "Lavender", "menthe": "Mint", "soleil": "Sun"}}, "c": [{"nom": "A transition", "video": "train", "tableau": "<b>The little train.</b> It goes from station to station to the end of the line: you can see the end coming.", "duree": "3 to 5 minutes — enough to finish what you're doing.", "gestes": ["Start the timer as you announce the change: “when the train arrives, we'll have lunch”.", "Keep the same painting for the same transition, day after day.", "When it arrives, move on right away — the painting kept its promise."]}, {"nom": "Calming down", "video": "bougie", "tableau": "<b>The candle.</b> A candle in a bedroom: the slowest movement in the app.", "duree": "3 to 5 minutes.", "gestes": ["Offer, don't impose: “shall we watch the candle together?”.", "Turn the music down or off if the sound bothers.", "Sit alongside and watch too, without talking."]}, {"nom": "A wait", "video": "labyrinthe", "tableau": "<b>The maze.</b> The mouse is looking for its cheese: something is always happening.", "duree": "The real length of the wait, not a reassuring one.", "gestes": ["Pick an honest length; if the wait drags on, start again rather than promise.", "Let the person choose the painting.", "Talk about what you see together: “she found a shortcut!”."]}, {"nom": "Brushing teeth", "video": "potager", "tableau": "<b>The vegetable garden.</b> From seed to harvest: you brush until everything has grown.", "duree": "2 minutes.", "gestes": ["Set the device where it can be seen in the mirror.", "Always the same painting, so it becomes a routine.", "Celebrate the harvest, not the clean teeth."]}, {"nom": "Focus", "video": "spirale", "tableau": "<b>The spiral.</b> Seeds set at the golden angle: discreet, no story to grab attention.", "duree": "10 to 12 minutes, then a break.", "gestes": ["Set the device away from the work, in the corner of your eye.", "Turn the music off.", "At the end, take a real break before starting again."]}]};</script>
+<script src="/interactif.js"></script>
 </body>
 </html>
