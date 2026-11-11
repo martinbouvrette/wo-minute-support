@@ -4,6 +4,23 @@
 (function () {
   const T = window.WM_TEXTES;
   const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ─── Android : l'app n'y existe pas. On le dit, et on mène à l'essai dans le navigateur ───
+  (function () {
+    const ua = navigator.userAgent || '', plat = (navigator.userAgentData && navigator.userAgentData.platform) || '';
+    if (!(/Android/i.test(ua) || /Android/i.test(plat)) || !T.android) return;
+    document.documentElement.classList.add('android');
+    document.querySelectorAll('a[href*="apps.apple.com"]').forEach(a => {
+      if (a.classList.contains('btn-petit')) { a.textContent = T.android.court; a.href = T.android.ancre; return; }
+      const actions = a.closest('.actions');
+      const note = document.createElement('p'); note.className = 'note-android'; note.textContent = T.android.note;
+      a.remove();
+      if (!actions) return;
+      actions.before(note);
+      const essai = actions.querySelector(`a[href="${T.android.ancre}"]`);
+      if (essai) { essai.classList.remove('btn-verre'); essai.classList.add('btn-plein'); }
+    });
+  })();
   const cl = v => Math.min(1, Math.max(0, v));
   // Les couleurs qu'on peut choisir : elles teintent la voile, comme dans l'app.
   const PALETTES = {
