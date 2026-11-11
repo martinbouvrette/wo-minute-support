@@ -175,7 +175,22 @@ footer .wrap{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12
 .trois-facons{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:26px; max-width:760px}
 .facon:nth-child(3){grid-column:1 / -1}
 .facon:nth-child(3) .vue{aspect-ratio:8/3}
-@media (max-width:520px){ .trois-facons{gap:12px} .facon{padding:12px} .facon:nth-child(3) .vue{aspect-ratio:2/1} }
+.lancer{grid-column:1 / -1}
+.titre-mobile{display:none}
+/* Sur téléphone, les trois minuteurs se voient ensemble : les images et leurs noms d'abord,
+   le bouton juste dessous, les explications ensuite (Martin, sur iPhone : « on ne voit pas les 3 minuteurs pour les comparer »). */
+@media (max-width:700px){
+  .trois-facons{gap:6px 10px; grid-template-areas:"v1 v2" "h1 h2" "v3 v3" "h3 h3" "go go" "p1 p1" "p2 p2" "p3 p3"}
+  .facon{display:contents}
+  .facon h3{margin:2px 0 10px; font-size:1.25rem; text-align:center}
+  .facon:nth-child(1) .vue{grid-area:v1} .facon:nth-child(1) h3{grid-area:h1} .facon:nth-child(1) p{grid-area:p1}
+  .facon:nth-child(2) .vue{grid-area:v2} .facon:nth-child(2) h3{grid-area:h2} .facon:nth-child(2) p{grid-area:p2}
+  .facon:nth-child(3) .vue{grid-area:v3; aspect-ratio:2/1} .facon:nth-child(3) h3{grid-area:h3} .facon:nth-child(3) p{grid-area:p3}
+  .lancer{grid-area:go; text-align:center; margin-bottom:14px}
+  .lancer .question{margin-top:0; text-align:center}
+  .facon p{margin:0 0 10px; font-size:.95rem}
+  .titre-mobile{display:inline; color:#fff; font-weight:600}
+}
 .facon{background:rgba(255,255,255,.05); border:1px solid var(--line); border-radius:18px; padding:16px}
 .facon .vue{aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:#06071a; display:flex; align-items:center; justify-content:center; position:relative}
 .facon .vue.claire{background:#e9e6df}
