@@ -2,18 +2,20 @@
   --cream:#f6ecd8; --cream-dim:rgba(246,236,216,.78); --cream-faint:rgba(246,236,216,.58);
   --gold:#f3d9a0; --sun:#ef8a5a; --line:rgba(246,236,216,.16);
   --verre:rgba(10,12,34,.46); --verre-fort:rgba(10,12,34,.62);
+  --ambre:#ffd9a8; --titre:"Instrument Serif",Georgia,serif; --texte:"Inter",system-ui,sans-serif;
   --maxw:1120px; --r:24px; --ease:cubic-bezier(.22,.61,.36,1);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0; background:#0b1030; color:var(--cream);
-  font-family:"Nunito",system-ui,sans-serif; font-size:18px; line-height:1.7;
+  font-family:var(--texte); font-size:17px; line-height:1.7;
   -webkit-font-smoothing:antialiased; overflow-x:hidden}
 #ciel{position:fixed; inset:0; width:100vw; height:100vh; z-index:-1; display:block}
-h1,h2,h3{font-family:"Fraunces",Georgia,serif; font-weight:500; line-height:1.12; color:#fff; margin:0 0 .5em}
-h1{font-size:clamp(2.6rem,7vw,5rem); letter-spacing:-.5px}
-h2{font-size:clamp(1.8rem,4vw,2.8rem); letter-spacing:-.3px}
-h3{font-size:1.25rem}
+h1,h2,h3{font-family:var(--titre); font-weight:400; line-height:1.04; color:#fff; margin:0 0 .45em}
+h1{font-size:clamp(3.2rem,8vw,6.2rem); line-height:.98; letter-spacing:-1.5px}
+h2{font-size:clamp(2.2rem,5vw,3.5rem); letter-spacing:-.8px}
+h3{font-size:1.55rem; letter-spacing:-.2px}
+h1 em,h2 em{color:var(--ambre)}
 p{margin:0 0 1em}
 a{color:var(--gold); text-decoration:none}
 a:hover{text-decoration:underline}
@@ -21,16 +23,17 @@ a:hover{text-decoration:underline}
 .ombre{text-shadow:0 2px 18px rgba(0,0,0,.45)}
 
 /* L'en-tête */
-header{position:sticky; top:0; z-index:10; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  background:rgba(10,12,34,.28); border-bottom:1px solid var(--line)}
+header{position:sticky; top:0; z-index:10; backdrop-filter:blur(24px) saturate(170%); -webkit-backdrop-filter:blur(24px) saturate(170%);
+  background:rgba(255,255,255,.07); border-bottom:1px solid rgba(255,255,255,.16)}
 .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
-.logo{font-family:"Fraunces",serif; font-size:1.5rem; color:#fff; font-weight:600; letter-spacing:-.3px}
+.logo{font-family:var(--titre); font-size:1.6rem; color:#fff; font-weight:400; letter-spacing:-.2px}
 .logo span{color:var(--sun)}
 .liens{display:flex; gap:22px; align-items:center; font-size:.95rem}
 .liens a{color:var(--cream-dim)}
 .liens a:hover{color:#fff; text-decoration:none}
 .liens a.btn-plein,.liens a.btn-plein:hover{color:#141a3a}
-@media (max-width:820px){ .liens a.secondaire{display:none} }
+.liens a{white-space:nowrap}
+@media (max-width:1000px){ .liens a.secondaire{display:none} }
 
 /* Les boutons */
 .btn{display:inline-flex; align-items:center; gap:10px; padding:14px 22px; border-radius:999px; font-weight:700;
@@ -38,15 +41,18 @@ header{position:sticky; top:0; z-index:10; backdrop-filter:blur(14px); -webkit-b
 .btn:hover{text-decoration:none; transform:translateY(-1px)}
 .btn svg{width:20px; height:20px}
 .btn-plein{background:#fff; color:#141a3a}
-.btn-verre{background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.3)}
+.btn-verre{background:rgba(255,255,255,.10); color:#fff; border:1px solid rgba(255,255,255,.28); backdrop-filter:blur(20px) saturate(170%); -webkit-backdrop-filter:blur(20px) saturate(170%)}
 .btn-petit{padding:9px 16px; font-size:.9rem}
 
 /* Les sections : du texte posé sur le ciel qui change */
 section{position:relative; padding:14vh 0}
-.carte{background:var(--verre); backdrop-filter:blur(18px) saturate(120%); -webkit-backdrop-filter:blur(18px) saturate(120%);
-  border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px,4vw,44px)}
-.etiquette{display:inline-block; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; font-weight:700}
-.lead{font-size:1.15rem; color:var(--cream-dim); max-width:640px}
+/* Le verre de la Galerie : clair, très transparent, un liseré de lumière en haut ; un voile sombre dessous pour que le texte se lise même sur le ciel d'après-midi */
+.carte{position:relative; background:linear-gradient(rgba(255,255,255,.11), rgba(255,255,255,.04)), rgba(10,12,34,.22);
+  backdrop-filter:blur(28px) saturate(170%); -webkit-backdrop-filter:blur(28px) saturate(170%);
+  border:1px solid rgba(255,255,255,.22); border-radius:28px; padding:clamp(24px,4vw,46px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 24px 60px rgba(0,0,0,.22)}
+.etiquette{display:inline-block; font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ambre); margin-bottom:14px; font-weight:600}
+.lead{font-size:1.13rem; color:rgba(255,255,255,.84); max-width:640px}
 .apparait{opacity:0; transform:translateY(24px); transition:opacity .9s var(--ease), transform .9s var(--ease)}
 .apparait.vu{opacity:1; transform:none}
 
@@ -66,9 +72,11 @@ section{position:relative; padding:14vh 0}
 .tel{position:relative; aspect-ratio:3/4; border-radius:18px; overflow:hidden; background:#06071a;
   border:7px solid #15172b; box-shadow:0 18px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.08)}
 .tel video,.tel img{width:100%; height:100%; object-fit:cover; display:block}
-.tel:nth-child(3n+2){transform:translateY(26px)}
+.tableaux .tel{transform:translateY(var(--dy,0px)) perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));
+  transition:transform .3s var(--ease), box-shadow .4s, border-color .4s}
+.tableaux .tel:nth-child(3n+2){--dy:26px}
 @media (max-width:560px){ .tableaux{grid-template-columns:repeat(2,1fr); gap:14px} .tel{border-radius:13px; border-width:5px}
-  .tableaux .tel:nth-child(3n+2){transform:none} .tableaux .tel:nth-child(even){transform:translateY(34px)} }
+  .tableaux .tel:nth-child(3n+2){--dy:0px} .tableaux .tel:nth-child(even){--dy:34px} }
 .note{font-size:.85rem; color:var(--cream-faint); margin-top:38px}
 
 /* Deux gestes */
@@ -76,7 +84,7 @@ section{position:relative; padding:14vh 0}
 .geste .tel{max-width:300px; margin:0 auto 18px}
 .geste h3{text-align:center}
 .geste p{text-align:center; color:var(--cream-dim); font-size:1rem}
-.num{display:block; text-align:center; font-family:"Fraunces",serif; color:var(--gold); font-size:1.1rem; margin-bottom:6px}
+.num{display:block; text-align:center; font-family:var(--titre); color:var(--gold); font-size:1.1rem; margin-bottom:6px}
 @media (max-width:820px){ .gestes{grid-template-columns:1fr} }
 
 /* Les milieux */
@@ -146,12 +154,12 @@ footer .wrap{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12
 .rond.vu{display:block}
 .rond svg{width:100%; height:100%}
 .fin{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;
-  font-family:"Fraunces",serif; font-size:clamp(1.6rem,4vw,2.4rem); color:#fff; text-shadow:0 2px 18px rgba(0,0,0,.5);
+  font-family:var(--titre); font-size:clamp(1.6rem,4vw,2.4rem); color:#fff; text-shadow:0 2px 18px rgba(0,0,0,.5);
   opacity:0; transition:opacity 1.2s}
 .fin.vu{opacity:1}
 .reglages{text-align:center}
 .reglages ol{list-style:none; padding:0; margin:0 0 14px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap; font-size:.95rem; color:var(--cream-dim)}
-.reglages ol b{color:var(--gold); font-family:"Fraunces",serif; margin-right:4px}
+.reglages ol b{color:var(--gold); font-family:var(--titre); margin-right:4px}
 #a-anneau{width:220px; height:220px; touch-action:none; cursor:pointer; display:block; margin:0 auto}
 .pm{display:flex; justify-content:center; gap:14px; margin:8px 0 18px}
 .pm button,.puce-c{width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:rgba(255,255,255,.08);
@@ -168,7 +176,7 @@ footer .wrap{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12
 .facon{background:rgba(255,255,255,.05); border:1px solid var(--line); border-radius:18px; padding:16px}
 .facon .vue{aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:#06071a; display:flex; align-items:center; justify-content:center; position:relative}
 .facon .vue.claire{background:#e9e6df}
-.chiffres{font-family:"Nunito",sans-serif; font-weight:700; font-size:clamp(2.6rem,6vw,3.6rem); color:#fff; font-variant-numeric:tabular-nums}
+.chiffres{font-family:var(--texte); font-weight:700; font-size:clamp(2.6rem,6vw,3.6rem); color:#fff; font-variant-numeric:tabular-nums}
 .disque{height:84%; aspect-ratio:1; filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
 .facon canvas{width:100%; height:100%; display:block}
 .facon h3{margin:14px 0 6px; font-size:1.1rem}
@@ -190,3 +198,61 @@ footer .wrap{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12
 .fiche dd b{color:#fff}
 .fiche ol{margin:6px 0 0; padding-left:20px; color:var(--cream-dim)}
 .fiche li{margin-bottom:6px}
+
+/* ───── La Galerie (10 novembre 2026) : l'ouverture qui vend ───── */
+.ouverture{padding:110px 0 70px}
+.ouv{display:grid; grid-template-columns:1.15fr .85fr; gap:48px; align-items:center}
+@media (max-width:900px){ .ouv{grid-template-columns:1fr} .ouv .appareil{max-width:300px} }
+.puces-ouv{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px}
+.puces-ouv span,.puces-ouv a{padding:6px 13px; border-radius:999px; font-size:.82rem; color:#fff; background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.24); backdrop-filter:blur(20px) saturate(170%); -webkit-backdrop-filter:blur(20px) saturate(170%)}
+.puces-ouv a{background:var(--sun); color:#141a3a; border-color:transparent; font-weight:600}
+.puces-ouv a:hover{text-decoration:none; filter:brightness(1.08)}
+.ouverture h1{margin:0}
+.ouverture .lead{font-size:1.2rem; color:#fff; opacity:.92; margin:24px 0 0; max-width:560px}
+.confiance{display:flex; align-items:center; gap:10px; font-size:.9rem; color:rgba(255,255,255,.8); margin-top:4px}
+.confiance i{flex:none; width:8px; height:8px; border-radius:50%; background:#7ee2a8; box-shadow:0 0 0 4px rgba(126,226,168,.2)}
+.appareil{position:relative; aspect-ratio:3/4; border-radius:34px; border:11px solid #0e1024; overflow:hidden; max-width:380px; width:100%; margin:0 auto;
+  box-shadow:0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.12)}
+.appareil video{width:100%; height:100%; object-fit:cover; display:block}
+.appareil::after{content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(125deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 38%)}
+.chiffres-ouv{display:grid; grid-template-columns:repeat(4,1fr); margin-top:56px; border-radius:22px; overflow:hidden;
+  background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.22); box-shadow:inset 0 1px 0 rgba(255,255,255,.26);
+  backdrop-filter:blur(28px) saturate(170%); -webkit-backdrop-filter:blur(28px) saturate(170%)}
+.chiffres-ouv div{padding:20px 22px}
+.chiffres-ouv div+div{border-left:1px solid rgba(255,255,255,.14)}
+.chiffres-ouv b{display:block; font:400 2.5rem/1 var(--titre); color:#fff; margin-bottom:6px}
+.chiffres-ouv span{font-size:.9rem; color:rgba(255,255,255,.78)}
+@media (max-width:760px){ .chiffres-ouv{grid-template-columns:1fr 1fr} .chiffres-ouv div:nth-child(3){border-left:0} .chiffres-ouv div:nth-child(n+3){border-top:1px solid rgba(255,255,255,.14)} }
+.ouverture .descends{display:none}
+
+/* ───── Les tableaux s'éveillent quand on les regarde (souris seulement) ───── */
+.survol .tableaux .tel{cursor:default}
+.survol .tableaux .tel video{filter:saturate(.45) brightness(.72); transition:filter .5s}
+.survol .tableaux .tel.eveille{--sc:1.04; z-index:2; border-color:#23264a; box-shadow:0 30px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(255,217,168,.5), 0 0 40px rgba(255,217,168,.18)}
+.survol .tableaux .tel.eveille video{filter:none}
+.seulement-survol{display:none}
+.survol .seulement-survol{display:inline}
+
+/* ───── La souris qui nous regarde, et son fromage ───── */
+.cachette{position:absolute; bottom:100%; width:64px; height:44px; overflow:hidden; pointer-events:none; z-index:3}
+.souris{display:block; width:64px; height:48px; transform:translateY(100%); transition:transform .7s var(--ease)}
+.souris.sort{transform:translateY(10%)}
+.souris.vite{transition:transform .16s ease-in}
+.souris .yeux{transition:transform .2s}
+.souris .paupieres{transform-origin:32px 27px; transform:scaleY(0); animation:cligne 4.2s infinite}
+@keyframes cligne{0%,92%,100%{transform:scaleY(0)} 95%{transform:scaleY(1)}}
+.souris .moustache{animation:frise 1.6s infinite ease-in-out; transform-origin:32px 35px}
+@keyframes frise{0%,100%{transform:rotate(0)} 50%{transform:rotate(2deg)}}
+.fromage{position:absolute; right:22px; bottom:18px; width:34px; height:28px; padding:0; border:0; background:none; cursor:pointer; opacity:.55; transition:opacity .3s, transform .3s}
+.fromage:hover,.fromage:focus-visible{opacity:1; transform:rotate(-8deg) scale(1.1)}
+.fromage svg{width:100%; height:100%; display:block}
+.fromage.mange{pointer-events:none}
+.coureuse{position:fixed; z-index:30; width:70px; height:38px; pointer-events:none; left:0; top:0}
+.coureuse .pattes{animation:trotte .18s infinite alternate}
+@keyframes trotte{from{transform:translateY(0)} to{transform:translateY(-3px)}}
+.mot-souris{position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px); z-index:31; padding:12px 20px; border-radius:999px; color:#fff;
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.26); backdrop-filter:blur(24px) saturate(170%); -webkit-backdrop-filter:blur(24px) saturate(170%);
+  font-family:var(--titre); font-size:1.35rem; opacity:0; transition:opacity .5s, transform .5s var(--ease); pointer-events:none}
+.mot-souris.vu{opacity:1; transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){ .tableaux .tel{transition:none} .souris,.souris .paupieres,.souris .moustache{animation:none; transition:none} }

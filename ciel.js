@@ -4,6 +4,8 @@
 (function(){
   const cv = document.getElementById('ciel'), ctx = cv.getContext('2d');
   const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const survol = !calme && matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (survol) document.documentElement.classList.add('survol');
   let W = 0, H = 0, dpr = 1;
   function taille(){ dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
@@ -30,6 +32,17 @@
     const z = heures[heures.length - 1]; return [z[1], z[2], z[3]];
   }
   let pLisse = 0;
+  // DES RONDS DANS L'EAU : la souris qui passe sur la mer (ou un doigt qui la touche) y laisse des ondes.
+  const ondes = []; let derniere = { x: -999, y: -999 };
+  const surLaMer = (e) => e.clientY > innerHeight * 0.66 + 4 && !e.target.closest('.carte, header, .appareil, .chiffres-ouv, a, button, details, .autre-langue');
+  function onde(x, y, force) { if (calme) return; if (ondes.length > 40) ondes.shift(); ondes.push({ x, y, t: performance.now() / 1000, f: force }); }
+  addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || !surLaMer(e)) return;
+    const dx = e.clientX - derniere.x, dy = e.clientY - derniere.y;
+    if (dx * dx + dy * dy < 1800) return;
+    derniere = { x: e.clientX, y: e.clientY }; onde(e.clientX, e.clientY, 0.55);
+  }, { passive: true });
+  addEventListener('pointerdown', e => { if (surLaMer(e)) onde(e.clientX, e.clientY, 1); }, { passive: true });
   function dessiner(t){
     const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
     const pCible = cl(scrollY / max);
@@ -113,6 +126,19 @@
         ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + pas * 0.25, y - 2 - f * 5, x + pas * 0.5, y); ctx.stroke();
       }
     }
+    // Les ondes : des ellipses qui s'élargissent, aplaties vers l'horizon ; la nuit, elles prennent la lumière de la lune.
+    const tn = performance.now() / 1000;
+    for (let i = ondes.length - 1; i >= 0; i--) {
+      const o = ondes[i], age = tn - o.t;
+      if (age > 3.2) { ondes.splice(i, 1); continue; }
+      const persp = 0.3 + 0.7 * cl((o.y - hz) / (H - hz));
+      for (let k = 0; k < 3; k++) {
+        const a2 = age - k * 0.38; if (a2 <= 0) continue;
+        const rr = a2 * 64 * persp * (0.7 + o.f * 0.5), al = (1 - age / 3.2) * (0.45 - k * 0.1) * (0.6 + o.f * 0.4);
+        ctx.strokeStyle = nuit > 0.3 ? `rgba(255,240,205,${al})` : `rgba(255,255,255,${al})`; ctx.lineWidth = 1.5 - k * 0.3;
+        ctx.beginPath(); ctx.ellipse(o.x, o.y, rr, rr * 0.26, 0, 0, 7); ctx.stroke();
+      }
+    }
     // Le chemin de lumière de l'astre sur l'eau.
     const refX = p < 0.45 ? W * 0.3 : (aube > 0 ? W * 0.62 : W * 0.76);
     const refA = p < 0.45 ? 0.5 * (1 - lisse((p - 0.3) / 0.15)) : Math.max(lune * 0.4, aube * 0.5);
@@ -157,6 +183,8 @@
   document.querySelectorAll('.apparait').forEach(el => io.observe(el));
   const films = new IntersectionObserver(es => es.forEach(e => {
     const v = e.target;
+    // À la souris, les films de la grille dorment jusqu'à ce qu'on les survole (surprises.js).
+    if (survol && v.closest('.tableaux')) { if (!e.isIntersecting) v.pause(); return; }
     if (e.isIntersecting && !calme) { v.play().catch(() => {}); } else { v.pause(); }
   }), { threshold: 0.25 });
   document.querySelectorAll('video').forEach(v => films.observe(v));
