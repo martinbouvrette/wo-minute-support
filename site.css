@@ -219,14 +219,14 @@ footer .wrap{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12
   box-shadow:0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.12)}
 .appareil video{width:100%; height:100%; object-fit:cover; display:block}
 .appareil::after{content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(125deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 38%)}
-.chiffres-ouv{display:grid; grid-template-columns:repeat(4,1fr); margin-top:56px; border-radius:22px; overflow:hidden;
+.chiffres-ouv{display:grid; grid-template-columns:repeat(3,1fr); margin-top:56px; border-radius:22px; overflow:hidden;
   background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.22); box-shadow:inset 0 1px 0 rgba(255,255,255,.26);
   backdrop-filter:blur(28px) saturate(170%); -webkit-backdrop-filter:blur(28px) saturate(170%)}
 .chiffres-ouv div{padding:20px 22px}
 .chiffres-ouv div+div{border-left:1px solid rgba(255,255,255,.14)}
 .chiffres-ouv b{display:block; font:400 2.5rem/1 var(--titre); color:#fff; margin-bottom:6px}
 .chiffres-ouv span{font-size:.9rem; color:rgba(255,255,255,.78)}
-@media (max-width:760px){ .chiffres-ouv{grid-template-columns:1fr 1fr} .chiffres-ouv div:nth-child(3){border-left:0} .chiffres-ouv div:nth-child(n+3){border-top:1px solid rgba(255,255,255,.14)} }
+@media (max-width:520px){ .chiffres-ouv div{padding:16px 14px} .chiffres-ouv b{font-size:2rem} }
 .ouverture .descends{display:none}
 
 /* ───── Les tableaux s'éveillent quand on les regarde (souris seulement) ───── */

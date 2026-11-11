@@ -5,72 +5,21 @@
   const T = window.WM_TEXTES;
   const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const cl = v => Math.min(1, Math.max(0, v));
-  const lisse = v => { v = cl(v); return v * v * (3 - 2 * v); };
-  const mixc = (a, b, f) => a.map((x, i) => x + (b[i] - x) * f);
-  const rgba = (c, a = 1) => `rgba(${c[0]|0},${c[1]|0},${c[2]|0},${a})`;
-  const hh = n => { const v = Math.sin(n * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
+  // Les couleurs qu'on peut choisir : elles teintent la voile, comme dans l'app.
   const PALETTES = {
-    corail:  { puce: '#ef8a5a', haut: [104,150,205], horizon: [247,196,146], mer: [70,108,150], voile: [239,138,90] },
-    lavande: { puce: '#b58ce6', haut: [118,118,198], horizon: [228,186,222], mer: [82,80,150],  voile: [186,146,232] },
-    menthe:  { puce: '#5fc9a2', haut: [84,160,176],  horizon: [214,234,196], mer: [48,118,128], voile: [96,206,164] },
-    soleil:  { puce: '#f2c14e', haut: [96,148,214],  horizon: [250,222,150], mer: [52,98,156],  voile: [242,193,78] },
+    corail:  { puce: '#ef8a5a', rgb: [239,138,90] },
+    lavande: { puce: '#b58ce6', rgb: [181,140,230] },
+    menthe:  { puce: '#5fc9a2', rgb: [95,201,162] },
+    soleil:  { puce: '#f2c14e', rgb: [242,193,78] },
   };
-  const NUIT = { haut: [10,14,46], horizon: [52,44,96], mer: [12,18,48] };
 
-  // Le petit tableau : un voilier qui traverse pendant que le soleil se couche ; le phare s'allume à la fin.
-  function tableau(cv, p, t, pal, fini) {
+  // Le petit tableau : le vrai voilier de l'app (estampe.js), à l'avancée p.
+  function tableau(cv, p, t, pal) {
     const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
     if (!W || !H) return;
     if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
     const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const k = Math.pow(cl(p), 1.3) * 0.92, hz = H * 0.6;
-    const haut = mixc(pal.haut, NUIT.haut, k), hor = mixc(pal.horizon, NUIT.horizon, k), mer = mixc(pal.mer, NUIT.mer, k);
-    let g = ctx.createLinearGradient(0, 0, 0, hz); g.addColorStop(0, rgba(haut)); g.addColorStop(1, rgba(hor));
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, hz + 1);
-    const nuit = lisse((p - 0.62) / 0.3);
-    for (let i = 0; nuit > 0 && i < 60; i++) {
-      ctx.fillStyle = `rgba(255,255,240,${nuit * (0.5 + 0.5 * Math.sin(t * 2 + i))})`;
-      ctx.beginPath(); ctx.arc(hh(i) * W, hh(i * 3.1) * hz * 0.85, 0.6 + hh(i * 7) * 1.1, 0, 7); ctx.fill();
-    }
-    const R = Math.min(W, H) * 0.075, sx = W * 0.32, sy = H * 0.16 + (hz + R * 1.2 - H * 0.16) * lisse(p);
-    const halo = ctx.createRadialGradient(sx, sy, R * 0.5, sx, sy, R * 4);
-    halo.addColorStop(0, 'rgba(255,200,130,.45)'); halo.addColorStop(1, 'rgba(255,200,130,0)');
-    ctx.fillStyle = halo; ctx.fillRect(sx - R * 4, sy - R * 4, R * 8, R * 8);
-    ctx.fillStyle = 'rgb(255,204,132)'; ctx.beginPath(); ctx.arc(sx, sy, R, 0, 7); ctx.fill();
-    ctx.fillStyle = rgba(mixc(haut, [20,20,40], 0.55));
-    ctx.beginPath(); ctx.moveTo(W * 0.66, hz);
-    for (let x = W * 0.66; x <= W; x += 6) ctx.lineTo(x, hz - H * 0.05 * Math.sin((x - W * 0.66) / (W * 0.34) * Math.PI));
-    ctx.lineTo(W, hz); ctx.fill();
-    g = ctx.createLinearGradient(0, hz, 0, H); g.addColorStop(0, rgba(mixc(mer, hor, 0.25))); g.addColorStop(1, rgba(mixc(mer, [0,0,0], 0.35)));
-    ctx.fillStyle = g; ctx.fillRect(0, hz, W, H - hz);
-    const sc = W / 520;
-    for (let r = 0; r < 12; r++) {
-      const f = r / 12, y = hz + 5 + (H - hz) * f * f + f * 8, pas = (22 + f * 60) * sc, dec = (t * (8 + f * 18) * sc + r * 31) % pas;
-      ctx.strokeStyle = rgba(mixc(hor, [255,255,255], 0.4), 0.14 + 0.28 * f); ctx.lineWidth = 1 + f * 1.8;
-      for (let x = -pas + dec; x < W + pas; x += pas) { ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + pas * 0.25, y - 2 - f * 4, x + pas * 0.5, y); ctx.stroke(); }
-    }
-    const refA = 0.5 * (1 - lisse(p / 0.85));
-    for (let i = 0; refA > 0.01 && i < 16; i++) {
-      const y = hz + 4 + (H - hz) * (i / 16), l = (8 + 24 * hh(i * 3)) * sc * (1 + i / 14);
-      ctx.fillStyle = `rgba(255,236,190,${refA * (0.5 + 0.5 * Math.sin(t * 3 + i * 1.7))})`; ctx.fillRect(sx - l / 2, y, l, 2);
-    }
-    const px = W * 0.9, pb = hz - H * 0.035;
-    ctx.fillStyle = 'rgba(240,235,225,.92)'; ctx.fillRect(px - 3 * sc, pb - 26 * sc, 6 * sc, 26 * sc);
-    ctx.fillStyle = 'rgba(200,70,60,.9)'; ctx.fillRect(px - 3 * sc, pb - 18 * sc, 6 * sc, 5 * sc);
-    if (fini) {
-      const a = 0.6 + 0.4 * Math.sin(t * 2.4), gl = ctx.createRadialGradient(px, pb - 28 * sc, 0, px, pb - 28 * sc, 70 * sc);
-      gl.addColorStop(0, `rgba(255,232,160,${a})`); gl.addColorStop(1, 'rgba(255,232,160,0)');
-      ctx.fillStyle = gl; ctx.fillRect(px - 70 * sc, pb - 98 * sc, 140 * sc, 140 * sc);
-    }
-    const bx = W * (0.08 + 0.7 * cl(p)) + 3 * Math.sin(t * 0.8), by = hz + (H - hz) * 0.22 + 2 * Math.sin(t * 1.4);
-    ctx.save(); ctx.translate(bx, by); ctx.scale(sc * 1.25, sc * 1.25); ctx.rotate(0.03 * Math.sin(t * 1.1));
-    ctx.fillStyle = 'rgba(18,16,32,.92)';
-    ctx.beginPath(); ctx.moveTo(-30, -6); ctx.lineTo(32, -6); ctx.quadraticCurveTo(22, 6, -22, 4); ctx.closePath(); ctx.fill();
-    ctx.fillRect(-1, -62, 2.4, 56);
-    ctx.fillStyle = rgba(pal.voile, .95); ctx.beginPath(); ctx.moveTo(1, -60); ctx.lineTo(1, -10); ctx.lineTo(28, -12); ctx.closePath(); ctx.fill();
-    ctx.fillStyle = 'rgba(246,236,216,.9)'; ctx.beginPath(); ctx.moveTo(-2, -54); ctx.lineTo(-2, -12); ctx.lineTo(-24, -12); ctx.closePath(); ctx.fill();
-    if (nuit > 0.2) { ctx.fillStyle = `rgba(255,214,140,${nuit})`; ctx.beginPath(); ctx.arc(28, -16, 3, 0, 7); ctx.fill(); }
-    ctx.restore();
+    WMEstampe.dessiner(ctx, W, H, { p, t, accent: pal.rgb });
   }
 
   // Le son : une note par cran, une cloche à la fin — jamais avant un geste du visiteur.
@@ -120,7 +69,7 @@
       secteur.setAttribute('d', disque(1 - p));
       if (debut !== null && e > 10 && e < 13) q.textContent = T.b.milieu;
       if (debut !== null && p >= 1 && !fini) { fini = true; q.textContent = T.b.fin; cloche(); }
-      if (visibles.has(cv)) tableau(cv, p, temps(now), PALETTES.corail, fini);
+      if (visibles.has(cv)) tableau(cv, p, temps(now), PALETTES.corail);
       requestAnimationFrame(boucle);
     }
     requestAnimationFrame(boucle);
@@ -192,7 +141,7 @@
       const p = etat === 'pret' ? 0 : Math.min(1, ecoule / (minutes * DUREE_MINUTE));
       if (etat === 'marche' && p >= 1) { etat = 'fini'; rond.classList.remove('vu'); fin.classList.add('vu'); go.textContent = T.a.parti; cloche(); }
       reste.setAttribute('stroke-dashoffset', Cr * p);
-      if (visibles.has(cv)) tableau(cv, p, temps(now), pal, etat === 'fini');
+      if (visibles.has(cv)) tableau(cv, p, temps(now), pal);
       requestAnimationFrame(boucle);
     }
     requestAnimationFrame(boucle);
