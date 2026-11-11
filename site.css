@@ -171,15 +171,18 @@ footer .wrap{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12
 .reglages .note{margin-top:16px}
 
 /* B — Le même temps, trois façons */
-.trois-facons{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:26px}
-@media (max-width:860px){ .trois-facons{grid-template-columns:1fr} }
+/* Le chiffre et le disque côte à côte, le tableau dessous sur toute la largeur (Martin, 10 novembre 2026) */
+.trois-facons{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:26px; max-width:760px}
+.facon:nth-child(3){grid-column:1 / -1}
+.facon:nth-child(3) .vue{aspect-ratio:8/3}
+@media (max-width:520px){ .trois-facons{gap:12px} .facon{padding:12px} .facon:nth-child(3) .vue{aspect-ratio:2/1} }
 .facon{background:rgba(255,255,255,.05); border:1px solid var(--line); border-radius:18px; padding:16px}
 .facon .vue{aspect-ratio:4/3; border-radius:12px; overflow:hidden; background:#06071a; display:flex; align-items:center; justify-content:center; position:relative}
 .facon .vue.claire{background:#e9e6df}
-.chiffres{font-family:var(--texte); font-weight:700; font-size:clamp(2.6rem,6vw,3.6rem); color:#fff; font-variant-numeric:tabular-nums}
+.chiffres{font-family:var(--texte); font-weight:700; font-size:clamp(1.9rem,5vw,3.2rem); color:#fff; font-variant-numeric:tabular-nums}
 .disque{height:84%; aspect-ratio:1; filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
 .facon canvas{width:100%; height:100%; display:block}
-.facon h3{margin:14px 0 6px; font-size:1.1rem}
+.facon h3{margin:14px 0 6px; font-size:1.4rem}
 .facon p{font-size:.95rem; color:var(--cream-dim); margin:0}
 .question{margin-top:22px; font-size:1.05rem; color:#fff; min-height:1.7em}
 #b-go{border:0; cursor:pointer; font-family:inherit; margin-top:8px}
